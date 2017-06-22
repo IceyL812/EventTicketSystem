@@ -1077,7 +1077,7 @@ namespace EventTicketSystem
         void addCustomEvent()
         {
             Console.WriteLine("You are creating a custom event (Event ID: {0})", World.NextEventId);
-            Console.WriteLine("Please insert a coordinates within [X-Axis:({0}) Y-Axis:({1})] , with this format: x,y):\n", World.AxisX, World.AxisY);
+            Console.WriteLine("Please insert a coordinates within [X-Axis:({0}) Y-Axis:({1})] , with this format: x,y):", World.AxisX, World.AxisY);
             if (World.CoodinateSystem == World.coodinateSystem.Integer) Console.WriteLine("Only Integer Numbers are allowed under Integer Coodinate System");
             else Console.WriteLine("Numbers with more than {0} decimal places would be automatically celling to {0} decimal places", World.DecimalPlacesForDecimalCoodinateSystem);
             Console.WriteLine("You can also insert 'cancel' to cancel the action");
@@ -1090,7 +1090,7 @@ namespace EventTicketSystem
             //Check if the format is valid
             bool validFormat = validLocationInput(input, World.CoodinateSystem == World.coodinateSystem.Integer, out location, out errorMsg) || validCancel(input);
             bool additionalRequirement = validCancel(input);
-            if(validFormat && !ReferenceEquals(location.x,null)) additionalRequirement = DataGenerator.validCoodinates(location);
+            if(validFormat && !ReferenceEquals(location,null)) additionalRequirement = DataGenerator.validCoodinates(location);
             //Repeat asking user if input invalid
             while (!validFormat || !additionalRequirement)
             {
