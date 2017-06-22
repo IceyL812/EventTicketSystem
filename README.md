@@ -1,13 +1,13 @@
 # Event Ticket System
 
-*Introduction*
+#Introduction
 This system allows user to find a number of nearest events and show their cheapest tickets in a World with 2 axis, while all data generates randomly at the start of the system. This is a console application with a simple menu user interface written in C#.
 
 This system aims not only functional, but also flexible and expandable. Developers can configure settings or regenerate data during runtime. With the good use of Object-Oriented Programming and well code documenting, developers can amend the codes or add functionalities easily.
 
 Please note that after exiting the application, all settings resets to default and all data would be lost (Be regenerated when opening the application again).
 
-*Build Instruction*
+#Build Instruction
 The built application is available in the 'build' folder (EventTicketSystem.exe).
 
 To build the application, please follow the instruction:
@@ -15,7 +15,7 @@ To build the application, please follow the instruction:
 2. Open the solution (EventTicketSystem.sln) with Visual Studio
 3. Click 'Start (F5)' and a Debug build should be built and start automatically
 
-*Programme structure
+#Programme structure
 World represents the world in the system, storing the coordinates system and all events data. It also stores all tickets data for getting information like the price range of all tickets.
 
 Event and Ticket are separated into 2 classes to be instantiated as new instances to store data. 
@@ -34,19 +34,19 @@ Mathc is a custom class which provides additional methods to solve math problems
 
 User Interface shows the menu, information and process user inputs.
 
-*User Interface*
+#User Interface
 The user interface of the application is menu based. To access functionalities or settings, please type in the corresponding number of the options.
 
 In the main menu, Option 4 and 5 are used for toggling the visibility of information of 'Application Settings' and 'Data Summary'. By default, 'Data Summary' are shown and 'Application Settings' are hidden.
 
-*Ticket Finder*
+#Ticket Finder
 Option 1 is the Ticket Finder which is the core function of the application. Simply input the coordinates in the format x,y then the nearest events and the cheapest tickets will show. 
 
 The ticket finding mechanism is to sort all event data (A list of Event objects) by the Manhattan distances between the event locations and coordinates user inputted. If there are more than one event having the same distance, the event are sorted with their cheapest ticket price in an ascending order. 
 
 After the sorting the event list in distance, starting from the first index of the sorted events list, the list of Ticket objects within the Event object would be sorted in price in ascending order. The first index of the Ticket list would be the cheapest price for the event. This process ignores the events has no tickets and loops until enough tickets have been found (5 by default) or there is no more events in the list.
 
-*Settings
+#Settings
 The default settings meets the first requirements of the test:
 - Both X and Y axis ranges from -10 to 10
 - The Coordinate system uses integer numbers
