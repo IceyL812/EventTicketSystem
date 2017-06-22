@@ -1,0 +1,6 @@
+c:\users\icey0\documents\visual studio 2015\Projects\EventTicketSystem\EventTicketSystem\bin\Debug\EventTicketSystem.exe.config
+c:\users\icey0\documents\visual studio 2015\Projects\EventTicketSystem\EventTicketSystem\bin\Debug\EventTicketSystem.exe
+c:\users\icey0\documents\visual studio 2015\Projects\EventTicketSystem\EventTicketSystem\bin\Debug\EventTicketSystem.pdb
+c:\users\icey0\documents\visual studio 2015\Projects\EventTicketSystem\EventTicketSystem\obj\Debug\EventTicketSystem.csprojResolveAssemblyReference.cache
+c:\users\icey0\documents\visual studio 2015\Projects\EventTicketSystem\EventTicketSystem\obj\Debug\EventTicketSystem.exe
+c:\users\icey0\documents\visual studio 2015\Projects\EventTicketSystem\EventTicketSystem\obj\Debug\EventTicketSystem.pdb
