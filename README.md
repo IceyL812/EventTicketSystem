@@ -44,6 +44,7 @@ The user interface of the application is menu based. To access functionalities o
 In the main menu, Option 4 and 5 are used for toggling the visibility of information of 'Application Settings' and 'Data Summary'. By default, 'Data Summary' are shown and 'Application Settings' are hidden.
 
 **Ticket Finder**
+
 Option 1 is the Ticket Finder which is the core function of the application. Simply input the coordinates in the format x,y then the nearest events and the cheapest tickets will show. 
 
 The ticket finding mechanism is to sort all event data (A list of Event objects) by the Manhattan distances between the event locations and coordinates user inputted. If there are more than one event having the same distance, the event are sorted with their cheapest ticket price in an ascending order. 
