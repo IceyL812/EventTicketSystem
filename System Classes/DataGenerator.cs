@@ -28,7 +28,7 @@ namespace EventTicketSystem.System_Classes
         {
             get
             {
-                //Set the current world capcacity of events under integer coodinate system
+                //Set the current world capcacity of events under integer coordinate system
                 int limit = World.RemainingEventCapacity;
 
                 //Set the adjusted range (Auto adjusted and cannot be changed by user) by limiting the non-adjusted range(Can be set by user)
@@ -130,7 +130,7 @@ namespace EventTicketSystem.System_Classes
             for(int i = 0; i < eventQuantity; i++)
             {
                  //Create a new event and add to the events list
-                _events.Add(GenerateEvent(RandomCoodinates(_events)));
+                _events.Add(GenerateEvent(Randomcoordinates(_events)));
             }
             return _events;
         }
@@ -162,62 +162,62 @@ namespace EventTicketSystem.System_Classes
         }
 
         /// <summary>
-        ///Generate and return Random Coodinates 
+        ///Generate and return Random coordinates 
         /// </summary>
         /// <param name="GeneratedEvents"></param>
-        /// <returns>A random and valid coodinates</returns>
-        public static Vector2 RandomCoodinates(List<Event> GeneratedEvents = null)
+        /// <returns>A random and valid coordinates</returns>
+        public static Vector2 Randomcoordinates(List<Event> GeneratedEvents = null)
         {
-            Vector2 coodinates;     
-            //Repeat generating coodinates until it is valid
+            Vector2 coordinates;     
+            //Repeat generating coordinates until it is valid
             do
             {
                 double x;
                 double y;
-                switch (World.CoodinateSystem) {
+                switch (World.CoordinateSystem) {
                     default:
-                    case World.coodinateSystem.Integer:
+                    case World.coordinateSystem.Integer:
                         //Randomize the x and y value within the world axis range
                         //Adding 1 to the max value are exclusive when convert to int (Unless the random is exactly 1 which is impossible)
                         x = Mathc.RandomRange(World.AxisX.min, World.AxisY.max + 1);
                         y = Mathc.RandomRange(World.AxisY.min, World.AxisY.max + 1);
-                        //Create a new coodinates(Vector2)
-                        coodinates = new Vector2(Math.Floor(x), Math.Floor(y));
+                        //Create a new coordinates(Vector2)
+                        coordinates = new Vector2(Math.Floor(x), Math.Floor(y));
                         break;
                     //Randomize the x and y value within the world axis range
-                    case World.coodinateSystem.Decimal:
+                    case World.coordinateSystem.Decimal:
                         x = Mathc.RandomRange(World.AxisX);
                         y = Mathc.RandomRange(World.AxisY);
-                        //Convert the coodinates into decimal places and create a new coodinates (Vector2)
-                        coodinates = new Vector2(Mathc.ConvertToDecimalPlace(x,World.DecimalPlacesForDecimalCoodinateSystem), Mathc.ConvertToDecimalPlace(y,World.DecimalPlacesForDecimalCoodinateSystem));
+                        //Convert the coordinates into decimal places and create a new coordinates (Vector2)
+                        coordinates = new Vector2(Mathc.ConvertToDecimalPlace(x,World.DecimalPlacesForDecimalCoordinateSystem), Mathc.ConvertToDecimalPlace(y,World.DecimalPlacesForDecimalCoordinateSystem));
                         break;
                       }
 
-            } while (!validCoodinates(coodinates, GeneratedEvents)); //Check if the coodinates are valid, repeat if invalid
+            } while (!validCoordinates(coordinates, GeneratedEvents)); //Check if the coordinates are valid, repeat if invalid
 
-            return coodinates;
+            return coordinates;
         }
 
         /// <summary>
-        /// Method to check if coodinates are valid (not repeated)
+        /// Method to check if coordinates are valid (not repeated)
         /// </summary>
-        /// <param name="cood">The coodinates (Vector2) to be checked</param>
+        /// <param name="coord">The coordinates (Vector2) to be checked</param>
         /// <param name="GenerateEvents">List of events which have been generated</param>
-        /// <returns>True if the coodinates are not repeated</returns>
-        public static bool validCoodinates(Vector2 cood, List<Event> GenerateEvents = null)
+        /// <returns>True if the coordinates are not repeated</returns>
+        public static bool validCoordinates(Vector2 coord, List<Event> GenerateEvents = null)
         {
             //Instatiate the repeated counter
             int repeated = 0;
             //Loop through all the Event objects stored in the World
             foreach (Event evt in World.Events) 
             {
-                //Check if the generated cood is the same
-                if (evt.Location == cood) 
+                //Check if the generated coord is the same
+                if (evt.Location == coord) 
                 {
                     //Add 1 to the counter
                     repeated++;
                     //Check if repeated is already greater or equals to the max limit
-                    if (repeated >= World.MaxEventAmountInSameCood) 
+                    if (repeated >= World.MaxEventAmountInSamecoord) 
                     {
                         //Return false and break loop
                         return false; 
@@ -230,13 +230,13 @@ namespace EventTicketSystem.System_Classes
                 //Loop through all the Event objects stored in the list of events generated
                 foreach (Event evt in GenerateEvents) 
                 {
-                    //Check if the generated cood is the same
-                    if (evt.Location == cood) 
+                    //Check if the generated coord is the same
+                    if (evt.Location == coord) 
                     {
                         //Add 1 to the counter
                         repeated++;
                         //Check if repeated is already greater or equals to the max limit
-                        if (repeated >= World.MaxEventAmountInSameCood) 
+                        if (repeated >= World.MaxEventAmountInSamecoord) 
                         {
                             return false; //Return false and break loop
                         }

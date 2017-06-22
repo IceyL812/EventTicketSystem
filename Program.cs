@@ -12,6 +12,7 @@ namespace EventTicketSystem
     {
         static void Main(string[] args)
         {
+            //Set the console window to an appropiate size
             Console.SetWindowSize(Math.Min(115, Console.LargestWindowWidth), Math.Min(35, Console.LargestWindowHeight));
 
             World mWorld = new World();

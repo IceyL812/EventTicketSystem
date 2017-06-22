@@ -80,8 +80,8 @@ namespace EventTicketSystem
             sb.AppendLine("===============Tickets Finder=============");
             sb.AppendFormat("This Ticket Finder can find you the cheapest ticket of up to {0} nearest events of a specific position\n", TicketFinder.TicketsToFind);
             sb.AppendFormat("Please insert a coordinates within [X-Axis:({0}) Y-Axis:({1})] , with this format: x,y):\n", World.AxisX, World.AxisY);
-            if (World.CoodinateSystem == World.coodinateSystem.Integer) sb.AppendLine("Only Integer Numbers are allowed under Integer Coodinate System");
-            else sb.AppendFormat("Numbers with more than {0} decimal places would be automatically celling to {0} decimal places\n", World.DecimalPlacesForDecimalCoodinateSystem);
+            if (World.CoordinateSystem == World.coordinateSystem.Integer) sb.AppendLine("Only Integer Numbers are allowed under Integer coordinate System");
+            else sb.AppendFormat("Numbers with more than {0} decimal places would be automatically celling to {0} decimal places\n", World.DecimalPlacesForDecimalCoordinateSystem);
             sb.AppendLine("You can also insert 'cancel' to go back to main menu");
 
             Console.WriteLine(sb.ToString());
@@ -91,7 +91,7 @@ namespace EventTicketSystem
             string input = Console.ReadLine();
             Vector2 location;
             string errorMsg;
-            while (!validLocationInput(input, World.CoodinateSystem == World.coodinateSystem.Integer, out location, out errorMsg))
+            while (!validLocationInput(input, World.CoordinateSystem == World.coordinateSystem.Integer, out location, out errorMsg))
             {
                 Console.WriteLine("Input invalid ({0}).\nPlease reinsert a correct value: ", errorMsg);
                 input = Console.ReadLine();
@@ -105,7 +105,7 @@ namespace EventTicketSystem
             else //Find tickets
             {
                 //Convert the location to appropiate decimal places
-                if(World.CoodinateSystem == World.coodinateSystem.Decimal) location = Mathc.ConvertToDecimalPlace(location,World.DecimalPlacesForDecimalCoodinateSystem);
+                if(World.CoordinateSystem == World.coordinateSystem.Decimal) location = Mathc.ConvertToDecimalPlace(location,World.DecimalPlacesForDecimalCoordinateSystem);
 
                 //Get the list of the ticket list
                 List<Ticket> ticketlist = TicketFinder.BestAvailableTickets(location);
@@ -117,20 +117,20 @@ namespace EventTicketSystem
                 //Print headers
                 sb.AppendFormat("\nHere are {0} nearest events to ({1}) and their cheapest tickets\n\n", ticketlist.Count, location);
                 sb.Append("-------------------------------------------------------------------------------------------------\n");
-                sb.AppendFormat(headerformat, "Event ID", "Coodinates", "Distance", "Ticket Price", "Ticket Quanitity");
+                sb.AppendFormat(headerformat, "Event ID", "coordinates", "Distance", "Ticket Price", "Ticket Quanitity");
                 sb.Append("-------------------------------------------------------------------------------------------------\n");
 
                 //Print each event and ticket value
                 foreach (Ticket t in ticketlist)
                 {
                     int id = t.Evt.ID;
-                    Vector2 cood = t.Evt.Location;
-                    double distance = Mathc.Distance(cood, location);
-                    //Convert the distance to appropiate decimal places if coodinate system is 'decimal' (Double vairables)
-                    if (World.CoodinateSystem == World.coodinateSystem.Decimal) distance = Mathc.ConvertToDecimalPlace(distance, World.DecimalPlacesForDecimalCoodinateSystem);
+                    Vector2 coord = t.Evt.Location;
+                    double distance = Mathc.Distance(coord, location);
+                    //Convert the distance to appropiate decimal places if coordinate system is 'decimal' (Double vairables)
+                    if (World.CoordinateSystem == World.coordinateSystem.Decimal) distance = Mathc.ConvertToDecimalPlace(distance, World.DecimalPlacesForDecimalCoordinateSystem);
                     double price = t.Price;
                     int quantity = t.Quantity;
-                    sb.AppendFormat(valueformat, id, "(" + cood+ ")", distance, price.ToString("C", new CultureInfo("en-US")), quantity);
+                    sb.AppendFormat(valueformat, id, "(" + coord+ ")", distance, price.ToString("C", new CultureInfo("en-US")), quantity);
                 }
                 sb.Append("-------------------------------------------------------------------------------------------------\n");
                 Console.WriteLine(sb.ToString());
@@ -161,9 +161,9 @@ namespace EventTicketSystem
             if (showDataSummary) sb.Append(dataSummary());
 
             sb.AppendLine("===============World Settings=============");
-            sb.AppendFormat("1) Switch Coodinate System to use {0} numbers\n",(World.CoodinateSystem == World.coodinateSystem.Integer) ? "Decimal" : "'Integer'");
-            sb.AppendLine("2) Change the decimal places for Coodinate System with Decimal Numbers");
-            sb.AppendLine("3) Change World Coodinate Range");
+            sb.AppendFormat("1) Switch coordinate System to use {0} numbers\n",(World.CoordinateSystem == World.coordinateSystem.Integer) ? "Decimal" : "'Integer'");
+            sb.AppendLine("2) Change the decimal places for coordinate System with Decimal Numbers");
+            sb.AppendLine("3) Change World coordinate Range");
             sb.AppendLine("4) Change Maximum events a location could hold");
             sb.AppendLine("5) Change the Maximum tickets that Ticket Finder show");
             sb.AppendLine("6) Back to Main Menu");
@@ -176,13 +176,13 @@ namespace EventTicketSystem
             switch (getOptionInput(6))
             {
                 case 1:
-                    changeWorldCoodSystem();
+                    changeWorldcoordSystem();
                     break;
                 case 2:
-                    changeDecimalPlacesForDecimalCoodSystem();
+                    changeDecimalPlacesForDecimalcoordSystem();
                     break;
                 case 3:
-                    changeWorldCoodRange();
+                    changeWorldcoordRange();
                     break;
                 case 4:
                     changeMaximumEventsInSameLocation();
@@ -280,10 +280,10 @@ namespace EventTicketSystem
             StringBuilder tempsb = new StringBuilder();
             tempsb.AppendLine("===========Current Application Setting============");
             tempsb.AppendLine("World Settings:");
-            tempsb.AppendFormat("World coodinate system: {0} numbers\n", (World.CoodinateSystem == World.coodinateSystem.Integer) ? "Integer" : "Decimal");
-            tempsb.AppendFormat("Decimal places for Coodinate system using Decimal Numbers: {0}\n", World.DecimalPlacesForDecimalCoodinateSystem);
-            tempsb.AppendFormat("World coodinate range: [X-Axis:({0}) Y-Axis:({1})]\n", World.AxisX, World.AxisY);
-            tempsb.AppendFormat("Maximum events a location could hold: {0}\n", World.MaxEventAmountInSameCood);
+            tempsb.AppendFormat("World coordinate system: {0} numbers\n", (World.CoordinateSystem == World.coordinateSystem.Integer) ? "Integer" : "Decimal");
+            tempsb.AppendFormat("Decimal places for coordinate system using Decimal Numbers: {0}\n", World.DecimalPlacesForDecimalCoordinateSystem);
+            tempsb.AppendFormat("World coordinate range: [X-Axis:({0}) Y-Axis:({1})]\n", World.AxisX, World.AxisY);
+            tempsb.AppendFormat("Maximum events a location could hold: {0}\n", World.MaxEventAmountInSamecoord);
             tempsb.AppendFormat("World Capacity of Events: Max: {0}, Currently remaining: {1} \n", World.MaxEventCapacity, World.RemainingEventCapacity);
             tempsb.AppendFormat("Maximum tickets that Ticket Finder shows: {0}\n", TicketFinder.TicketsToFind);
 
@@ -299,11 +299,11 @@ namespace EventTicketSystem
         //World Settings
 
         /// <summary>
-        /// Switching the coodinate system between 'Integer' and 'Decimal'
+        /// Switching the coordinate system between 'Integer' and 'Decimal'
         /// </summary>
-        void changeWorldCoodSystem()
+        void changeWorldcoordSystem()
         {
-            Console.WriteLine("Changing Coodinate System Mode requires regenerating all the events and tickets data.");
+            Console.WriteLine("Changing coordinate System Mode requires regenerating all the events and tickets data.");
 
             //Check if the event amount range would be automatically adjusted
             if (DataGenerator.EventAmountRange == DataGenerator.EventAmountRangeAdjusted)
@@ -316,12 +316,12 @@ namespace EventTicketSystem
             Console.WriteLine("Do you wish to continue? (Y/N)");
             if (getYOrN())
             {
-                World.CoodinateSystem = (World.CoodinateSystem == World.coodinateSystem.Integer) ? World.coodinateSystem.Decimal : World.coodinateSystem.Integer;
+                World.CoordinateSystem = (World.CoordinateSystem == World.coordinateSystem.Integer) ? World.coordinateSystem.Decimal : World.coordinateSystem.Integer;
     
                 //Clear and regenerate all the data (Events and tickets)
                 DataGenerator.GenerateData(clearAllData: true);
 
-                Console.WriteLine("World Coodinate System has been successfully changed to {0} numbers", (World.CoodinateSystem == World.coodinateSystem.Integer) ? "Integer" : "Decimal");
+                Console.WriteLine("World coordinate System has been successfully changed to {0} numbers", (World.CoordinateSystem == World.coordinateSystem.Integer) ? "Integer" : "Decimal");
                 Console.WriteLine("All events and tickets data has been regenerated");
                 Console.WriteLine("(Press [Enter] To Continue)");
                 Console.ReadLine();
@@ -339,11 +339,11 @@ namespace EventTicketSystem
         }
 
         /// <summary>
-        /// Change the decimal places for decimal coodinate system
+        /// Change the decimal places for decimal coordinate system
         /// </summary>
-        void changeDecimalPlacesForDecimalCoodSystem()
+        void changeDecimalPlacesForDecimalcoordSystem()
         {
-            Console.WriteLine("Please insert a integer number (1 to 8) for the new decimal places for the decimal coodinate system.");
+            Console.WriteLine("Please insert a integer number (1 to 8) for the new decimal places for the decimal coordinate system.");
             Console.WriteLine("You can also type 'cancel' to cancel this action.");
             string input = Console.ReadLine();
             int result;
@@ -385,22 +385,22 @@ namespace EventTicketSystem
             }
             else
             {
-                Console.WriteLine("Changing the decimal places for the decimal coodinate system from {0} to {1}", World.DecimalPlacesForDecimalCoodinateSystem, result);
+                Console.WriteLine("Changing the decimal places for the decimal coordinate system from {0} to {1}", World.DecimalPlacesForDecimalCoordinateSystem, result);
                 
-                if (World.CoodinateSystem == World.coodinateSystem.Decimal)
+                if (World.CoordinateSystem == World.coordinateSystem.Decimal)
                 {
-                    Console.WriteLine("Changing the decimal places under decimal coodinate system requires regenerating all the events and tickets data.");
+                    Console.WriteLine("Changing the decimal places under decimal coordinate system requires regenerating all the events and tickets data.");
                 }
 
                 //Confirm the user's intention
                 Console.WriteLine("Do you wish to continue? (Y/N)");
                 if (getYOrN())
                 {
-                    World.DecimalPlacesForDecimalCoodinateSystem = (int)result;
-                    Console.WriteLine("The decimal places for the decimal coodinate system has been changed to {0}", World.DecimalPlacesForDecimalCoodinateSystem);
+                    World.DecimalPlacesForDecimalCoordinateSystem = (int)result;
+                    Console.WriteLine("The decimal places for the decimal coordinate system has been changed to {0}", World.DecimalPlacesForDecimalCoordinateSystem);
 
-                    //Regenerate all events and tickets data if under decimal coodinate system 
-                    if (World.CoodinateSystem == World.coodinateSystem.Decimal)
+                    //Regenerate all events and tickets data if under decimal coordinate system 
+                    if (World.CoordinateSystem == World.coordinateSystem.Decimal)
                     {
                         DataGenerator.GenerateData(clearAllData: true);
                         Console.WriteLine("All events and tickets data has been regenerated");
@@ -420,9 +420,9 @@ namespace EventTicketSystem
         }
 
         /// <summary>
-        /// Change the range of the world coodinate system
+        /// Change the range of the world coordinate system
         /// </summary>
-        void changeWorldCoodRange()
+        void changeWorldcoordRange()
         {
             //New ranges for X-axis and Y-axis
             Range newX;
@@ -430,15 +430,15 @@ namespace EventTicketSystem
 
             //Set new range of X-Axis
             Console.WriteLine("Please insert the new range of X-Axis, following this format: min,max");
-            if (World.CoodinateSystem == World.coodinateSystem.Integer) Console.WriteLine("Only Integer Numbers are allowed under Integer Coodinate System");
-            else Console.WriteLine("Numbers with more than {0} decimal places would be automatically converted to {0} decimal places", World.DecimalPlacesForDecimalCoodinateSystem);
+            if (World.CoordinateSystem == World.coordinateSystem.Integer) Console.WriteLine("Only Integer Numbers are allowed under Integer coordinate System");
+            else Console.WriteLine("Numbers with more than {0} decimal places would be automatically converted to {0} decimal places", World.DecimalPlacesForDecimalCoordinateSystem);
             Console.WriteLine("You can also type 'cancel' to cancel this action.");
 
             string input = Console.ReadLine();
             string errorMsg;
 
             //Check if the format is valid and output the new X-Axis
-            bool validFormat = validRangeFormat(input, World.CoodinateSystem == World.coodinateSystem.Integer, out newX, out errorMsg, Range.RangeType.Axis) || validCancel(input);
+            bool validFormat = validRangeFormat(input, World.CoordinateSystem == World.coordinateSystem.Integer, out newX, out errorMsg, Range.RangeType.Axis) || validCancel(input);
            
             //Check if the additional requirement has been made (Max value has to be greater than Min)
             bool additionalRequirement = validCancel(input);
@@ -450,7 +450,7 @@ namespace EventTicketSystem
                 Console.WriteLine("Input invalid ({0}).\nPlease reinsert a correct value: ", errorMsg);
                 input = Console.ReadLine();
 
-                validFormat = validRangeFormat(input, World.CoodinateSystem == World.coodinateSystem.Integer, out newX, out errorMsg, Range.RangeType.Axis) || validCancel(input);
+                validFormat = validRangeFormat(input, World.CoordinateSystem == World.coordinateSystem.Integer, out newX, out errorMsg, Range.RangeType.Axis) || validCancel(input);
                 if (!ReferenceEquals(newX, null)) additionalRequirement = newX.min < newX.max;
             }
 
@@ -464,13 +464,13 @@ namespace EventTicketSystem
 
             //Set new range of Y-Axis
             Console.WriteLine("Please insert the new range of Y-Axis, following this format: min,max");
-            if (World.CoodinateSystem == World.coodinateSystem.Integer) Console.WriteLine("Only Integer Numbers are allowed under Integer Coodinate System");
-            else Console.WriteLine("Numbers with more than {0} decimal places would be automatically converted to {0} decimal places", World.DecimalPlacesForDecimalCoodinateSystem);
+            if (World.CoordinateSystem == World.coordinateSystem.Integer) Console.WriteLine("Only Integer Numbers are allowed under Integer coordinate System");
+            else Console.WriteLine("Numbers with more than {0} decimal places would be automatically converted to {0} decimal places", World.DecimalPlacesForDecimalCoordinateSystem);
             Console.WriteLine("You can also type 'cancel' to cancel this action.");
 
             input = Console.ReadLine();
             //Check if the format is valid and output the new X-Axis
-            validFormat = validRangeFormat(input, World.CoodinateSystem == World.coodinateSystem.Integer, out newY, out errorMsg, Range.RangeType.Axis) || validCancel(input);
+            validFormat = validRangeFormat(input, World.CoordinateSystem == World.coordinateSystem.Integer, out newY, out errorMsg, Range.RangeType.Axis) || validCancel(input);
             additionalRequirement = validCancel(input);
             //Check if the additional requirement has been made (Max value has to be greater than Min)
             if (!ReferenceEquals(newY, null)) additionalRequirement = newY.min < newY.max;
@@ -481,7 +481,7 @@ namespace EventTicketSystem
                 Console.WriteLine("Input invalid ({0}).\nPlease reinsert a correct value: ", errorMsg);
                 input = Console.ReadLine();
                 //Reverify
-                validFormat = validRangeFormat(input, World.CoodinateSystem == World.coodinateSystem.Integer, out newY, out errorMsg, Range.RangeType.Axis) || validCancel(input);
+                validFormat = validRangeFormat(input, World.CoordinateSystem == World.coordinateSystem.Integer, out newY, out errorMsg, Range.RangeType.Axis) || validCancel(input);
                 additionalRequirement = false;
                 if (!ReferenceEquals(newY, null)) additionalRequirement = newY.min < newY.max;
             }
@@ -494,11 +494,11 @@ namespace EventTicketSystem
                 return;
             }
 
-            //Convert the value to the appropiate decimal places under decimal coodinate system
-            if (World.CoodinateSystem == World.coodinateSystem.Decimal)
+            //Convert the value to the appropiate decimal places under decimal coordinate system
+            if (World.CoordinateSystem == World.coordinateSystem.Decimal)
             {
-                newX = Mathc.ConvertToDecimalPlace(newX, World.DecimalPlacesForDecimalCoodinateSystem);
-                newY = Mathc.ConvertToDecimalPlace(newY, World.DecimalPlacesForDecimalCoodinateSystem);
+                newX = Mathc.ConvertToDecimalPlace(newX, World.DecimalPlacesForDecimalCoordinateSystem);
+                newY = Mathc.ConvertToDecimalPlace(newY, World.DecimalPlacesForDecimalCoordinateSystem);
             }
 
             Console.WriteLine("Changing the world range from [X-Axis({0}) Y-Axis:({1})] to [X-Axis({2}) Y-Axis:({3})]",
@@ -547,10 +547,10 @@ namespace EventTicketSystem
                         World.Events.Remove(e);
                     }
 
-                    Console.WriteLine("{0} events out of the new world coodinates and their tickets data have been removed.", eventsToBeRemoved.Count);
+                    Console.WriteLine("{0} events out of the new world coordinates and their tickets data have been removed.", eventsToBeRemoved.Count);
                 }
 
-                Console.WriteLine("The world coodinates range have been changed to [X-Axis({0}) Y-Axis:({1})] successfully", World.AxisX, World.AxisY);
+                Console.WriteLine("The world coordinates range have been changed to [X-Axis({0}) Y-Axis:({1})] successfully", World.AxisX, World.AxisY);
                 Console.WriteLine("(Press [Enter] to continue)");
                 Console.ReadLine();
                 worldSettings();
@@ -565,7 +565,7 @@ namespace EventTicketSystem
         }
         
         /// <summary>
-        /// Change the maximum events in the same location (Coodination)
+        /// Change the maximum events in the same location (coordination)
         /// </summary>
         void changeMaximumEventsInSameLocation()
         {
@@ -604,21 +604,21 @@ namespace EventTicketSystem
             }
             else
             {
-                Console.WriteLine("Changing the maximum amount of events a location can hold from {0} to {1}", World.MaxEventAmountInSameCood, result);
+                Console.WriteLine("Changing the maximum amount of events a location can hold from {0} to {1}", World.MaxEventAmountInSamecoord, result);
 
                 //Create a Dictionary to store locations and events at the same location
                 Dictionary<Vector2, int> _events = new Dictionary<Vector2, int>();
                 //Create a list to store locations with events more than the new limit value
                 List<Vector2> overCrowdedLocation = new List<Vector2>();
 
-                if (result < World.MaxEventAmountInSameCood)
+                if (result < World.MaxEventAmountInSamecoord)
                 {
                     foreach(Event e in World.Events)
                     {
                         if(_events.Count>0 && _events.ContainsKey(e.Location))
                         {
                             _events[e.Location]++;
-                            if (_events[e.Location] > World.MaxEventAmountInSameCood) overCrowdedLocation.Add(e.Location);
+                            if (_events[e.Location] > World.MaxEventAmountInSamecoord) overCrowdedLocation.Add(e.Location);
                         }else
                         {
                             _events.Add(e.Location, 1);
@@ -632,7 +632,7 @@ namespace EventTicketSystem
                 if (getYOrN())
                 {
                     //Apply value
-                    World.MaxEventAmountInSameCood = (int)result;
+                    World.MaxEventAmountInSamecoord = (int)result;
 
                     //Remove the repeated events
                     List<Event> eventsToBeRemoved = new List<Event>();
@@ -662,7 +662,7 @@ namespace EventTicketSystem
                         }
                         Console.WriteLine("{0} events and their tickets data have been removed", eventsToBeRemoved.Count);
                     }
-                    Console.WriteLine("The maximum amount of events a location can hold has been changed to {0}", World.MaxEventAmountInSameCood);
+                    Console.WriteLine("The maximum amount of events a location can hold has been changed to {0}", World.MaxEventAmountInSamecoord);
                     Console.WriteLine("(Press [Enter] to continue)");
                     Console.ReadLine();
                     worldSettings();
@@ -753,8 +753,8 @@ namespace EventTicketSystem
                 if(DataGenerator.EventAmountRangeAdjusted.max <= 0)
                 {
                     //Cancel the action since no more room can fit
-                    Console.WriteLine("Maximum world coodinates has been reached. Unable to generate more events.");
-                    Console.WriteLine("Please try increasing the range of the world coodinates system, or the maximum number of a location can hold.");
+                    Console.WriteLine("Maximum world coordinates has been reached. Unable to generate more events.");
+                    Console.WriteLine("Please try increasing the range of the world coordinates system, or the maximum number of a location can hold.");
                     cancelAction();
                     dataGeneratorSettings();
                 }
@@ -1078,8 +1078,8 @@ namespace EventTicketSystem
         {
             Console.WriteLine("You are creating a custom event (Event ID: {0})", World.NextEventId);
             Console.WriteLine("Please insert a coordinates within [X-Axis:({0}) Y-Axis:({1})] , with this format: x,y):", World.AxisX, World.AxisY);
-            if (World.CoodinateSystem == World.coodinateSystem.Integer) Console.WriteLine("Only Integer Numbers are allowed under Integer Coodinate System");
-            else Console.WriteLine("Numbers with more than {0} decimal places would be automatically celling to {0} decimal places", World.DecimalPlacesForDecimalCoodinateSystem);
+            if (World.CoordinateSystem == World.coordinateSystem.Integer) Console.WriteLine("Only Integer Numbers are allowed under Integer coordinate System");
+            else Console.WriteLine("Numbers with more than {0} decimal places would be automatically celling to {0} decimal places", World.DecimalPlacesForDecimalCoordinateSystem);
             Console.WriteLine("You can also insert 'cancel' to cancel the action");
 
             //Process Input
@@ -1088,20 +1088,20 @@ namespace EventTicketSystem
             string errorMsg;
 
             //Check if the format is valid
-            bool validFormat = validLocationInput(input, World.CoodinateSystem == World.coodinateSystem.Integer, out location, out errorMsg) || validCancel(input);
+            bool validFormat = validLocationInput(input, World.CoordinateSystem == World.coordinateSystem.Integer, out location, out errorMsg) || validCancel(input);
             bool additionalRequirement = validCancel(input);
-            if(validFormat && !ReferenceEquals(location,null)) additionalRequirement = DataGenerator.validCoodinates(location);
+            if(validFormat && !ReferenceEquals(location,null)) additionalRequirement = DataGenerator.validCoordinates(location);
             //Repeat asking user if input invalid
             while (!validFormat || !additionalRequirement)
             {
                 if(!validFormat) Console.WriteLine("Input invalid ({0}).\nPlease reinsert a correct value: ", errorMsg);
                 else if (!additionalRequirement)
-                Console.WriteLine("({0}) has reached its maximum capacity ({1}) of holding events\nPlease try another coodinates:", location, World.MaxEventAmountInSameCood);
+                Console.WriteLine("({0}) has reached its maximum capacity ({1}) of holding events\nPlease try another coordinates:", location, World.MaxEventAmountInSamecoord);
 
                 input = Console.ReadLine();
-                validFormat = validLocationInput(input, World.CoodinateSystem == World.coodinateSystem.Integer, out location, out errorMsg) || validCancel(input);
+                validFormat = validLocationInput(input, World.CoordinateSystem == World.coordinateSystem.Integer, out location, out errorMsg) || validCancel(input);
                 additionalRequirement = validCancel(input);
-                if (validFormat && !ReferenceEquals(location, null)) additionalRequirement = DataGenerator.validCoodinates(location);
+                if (validFormat && !ReferenceEquals(location, null)) additionalRequirement = DataGenerator.validCoordinates(location);
             }
 
             //Check if the user typed cancel
@@ -1113,8 +1113,8 @@ namespace EventTicketSystem
             }
             else
             {
-                //Convert the coodinates to appropiate decimal places
-                if (World.CoodinateSystem == World.coodinateSystem.Decimal) location = Mathc.ConvertToDecimalPlace(location, World.DecimalPlacesForDecimalCoodinateSystem);
+                //Convert the coordinates to appropiate decimal places
+                if (World.CoordinateSystem == World.coordinateSystem.Decimal) location = Mathc.ConvertToDecimalPlace(location, World.DecimalPlacesForDecimalCoordinateSystem);
                 Console.WriteLine("Ready to generate event (Event ID: {0}) at ({1})", World.NextEventId, location);
                 Console.WriteLine("Tickets would be randomly generated to the event");
 
@@ -1307,7 +1307,7 @@ namespace EventTicketSystem
                     //If it is integer numbers only, check if they are valid integers
                     if (IntegerValueOnly && (!validInt(x) || !validInt(y)))
                     {
-                        errorMsg = "Coodinates with decimal numbers are not allowed in Integer Mode";
+                        errorMsg = "coordinates with decimal numbers are not allowed in Integer Mode";
                     }
                     else
                     {
@@ -1360,10 +1360,10 @@ namespace EventTicketSystem
                 //Check if the format is valid
                 if (validVector2Format(input, IntegerValueOnly, out result, out errorMsg))
                 { 
-                    //Check if the coodinates are within the world axis
+                    //Check if the coordinates are within the world axis
                     if (!World.AxisX.WithinRange(result.x) || !World.AxisY.WithinRange(result.y))
                     {
-                        errorMsg = String.Format("Coodinates are outside of the world limit [X-Axis:{0}  Y-Axis:{1}]",
+                        errorMsg = String.Format("coordinates are outside of the world limit [X-Axis:{0}  Y-Axis:{1}]",
                                                     World.AxisX, World.AxisY);
                     }
                     else
